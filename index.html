@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanjeevan V | Cyber Security Portfolio</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS Variables */
+        :root {
+            --bg-main: #000000;
+            --bg-sec: #0d0d0d;
+            --gold: #FFD700;
+            --gold-light: #FFF8DC;
+            --glass-bg: rgba(255, 215, 0, 0.03);
+            --glass-border: rgba(255, 215, 0, 0.2);
+            --glass-glow: 0 0 20px rgba(255, 215, 0, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --font-head: 'Orbitron', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+        }
+
+        /* Global Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: auto;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* Custom Cursor Elements */
+        .cursor-pulse {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            border: 1px solid var(--gold);
+            animation: pulseAnim 0.6s ease-out forwards;
+        }
+
+        @keyframes pulseAnim {
+            0% { width: 0; height: 0; opacity: 1; }
+            100% { width: 100px; height: 100px; opacity: 0; }
+        }
+
+        /* Typography & Layout Utilities */
+        h1, h2, h3 { font-family: var(--font-head); color: var(--gold-light); }
+        .text-gold { color: var(--gold); }
+        .section { padding: 100px 10%; position: relative; }
+        .section-title { font-size: 2.5rem; text-align: center; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 2px; }
+        .section-title span { color: var(--gold); }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--glass-glow);
+            transition: all 0.4s ease;
+        }
+        .glass-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            transform: translateY(-5px);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            font-family: var(--font-head);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+        }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.4), transparent);
+            transition: all 0.5s;
+        }
+        .btn:hover::before { left: 100%; }
+        .btn:hover {
+            background: rgba(255, 215, 0, 0.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-solid {
+            background: var(--gold);
+            color: var(--bg-main);
+        }
+        .btn-solid:hover { background: var(--gold-light); }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            padding-top: 150px;
+        }
+        .hero-content { flex: 1; }
+        .hero-greeting { font-size: 1.5rem; color: var(--gold-light); margin-bottom: 10px; }
+        .hero-name { font-size: 4rem; text-transform: uppercase; margin-bottom: 15px; text-shadow: 0 0 20px rgba(255,215,0,0.3); }
+        .hero-roles { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 20px; font-family: var(--font-head); }
+        .hero-tagline { font-size: 1.1rem; font-style: italic; border-left: 3px solid var(--gold); padding-left: 15px; margin-bottom: 30px; }
+        .hero-buttons { display: flex; gap: 20px; }
+        .hero-image { flex: 1; display: flex; justify-content: center; position: relative; }
+        .img-placeholder {
+            width: 350px; height: 350px;
+            border-radius: 50%;
+            background: var(--bg-sec);
+            border: 2px dashed var(--glass-border);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: inset 0 0 50px rgba(255,215,0,0.05), 0 0 50px rgba(255,215,0,0.1);
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .img-placeholder img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: 50% 34%;
+            position: relative;
+            z-index: 2;
+        }
+        .img-placeholder::after {
+            content: none;
+            position: absolute;
+            width: 110%; height: 110%;
+            border-radius: 50%; border: 1px solid var(--gold);
+            animation: rotateOrb 10s linear infinite;
+            border-left-color: transparent; border-right-color: transparent;
+            pointer-events: none;
+            z-index: 1;
+        }
+        @keyframes rotateOrb { 100% { transform: rotate(360deg); } }
+
+        /* Skills Section */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .skill-category h3 { margin-bottom: 20px; text-align: center; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; }
+        .skill-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .skill-list li { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; }
+        .skill-list i { color: var(--gold); width: 25px; text-align: center; }
+
+        /* Projects Section */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .project-card h3 { margin-bottom: 15px; font-size: 1.3rem; }
+        .project-tech { color: var(--gold); font-size: 0.9rem; margin-bottom: 20px; }
+        .project-links { display: flex; gap: 15px; margin-top: auto; }
+
+        /* Certifications */
+        .certificate-card { text-align: center; }
+        .certificate-preview {
+            display: block;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        .certificate-preview:hover {
+            transform: translateY(-4px);
+            border-color: var(--gold);
+            box-shadow: 0 8px 24px rgba(255,215,0,0.18);
+        }
+        .certificate-preview img { display: block; width: 100%; height: auto; }
+
+        /* Timeline Section */
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; padding: 40px 0; }
+        .timeline::before {
+            content: ''; position: absolute;
+            top: 0; left: 50%; transform: translateX(-50%);
+            width: 2px; height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+        }
+        .timeline-item { position: relative; margin-bottom: 40px; width: 50%; padding-right: 40px; text-align: right; }
+        .timeline-item:nth-child(even) { margin-left: 50%; padding-right: 0; padding-left: 40px; text-align: left; }
+        .timeline-dot {
+            position: absolute; top: 15px; right: -8px;
+            width: 16px; height: 16px;
+            background: var(--bg-main); border: 2px solid var(--gold);
+            border-radius: 50%; z-index: 2;
+            box-shadow: 0 0 10px var(--gold);
+        }
+        .timeline-item:nth-child(even) .timeline-dot { right: auto; left: -8px; }
+        .timeline-content { padding: 20px; }
+
+        /* Stats & Achievements */
+        .stats-grid, .achievements-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center; }
+        .stat-card img { width: 100%; border-radius: 10px; border: 1px solid var(--glass-border); }
+        .achievement-number { font-size: 3rem; color: var(--gold); font-family: var(--font-head); margin-bottom: 10px; text-shadow: 0 0 15px rgba(255,215,0,0.3); }
+
+        /* Footer */
+        footer { text-align: center; padding: 40px; border-top: 1px solid var(--glass-border); margin-top: 50px; }
+        footer p { color: var(--text-muted); letter-spacing: 1px; }
+        
+        /* Contact Form */
+        .contact-container { max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 20px; }
+        .form-control {
+            width: 100%; padding: 15px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px; color: white;
+            font-family: var(--font-body);
+        }
+        .form-control:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 10px rgba(255,215,0,0.2); }
+        .contact-email { text-align: center; margin-top: 24px; color: var(--text-muted); }
+        .contact-email a { color: var(--gold-light); text-decoration: none; }
+        .contact-email a:hover { color: var(--gold); text-decoration: underline; }
+        .social-links { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
+        .social-links a { color: var(--gold-light); font-size: 1.5rem; transition: 0.3s; }
+        .social-links a:hover { color: var(--gold); transform: scale(1.2); text-shadow: 0 0 10px var(--gold); }
+
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 100px; }
+            .hero-buttons { justify-content: center; }
+            .timeline::before { left: 20px; }
+            .timeline-item { width: 100%; padding-left: 50px !important; padding-right: 0 !important; text-align: left !important; margin-left: 0 !important; }
+            .timeline-dot { left: 12px !important; right: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Background -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Hero Section -->
+    <section class="section hero" id="home">
+        <div class="hero-content gsap-fade-up">
+            <div class="hero-greeting">👋 Hello, I'm</div>
+            <h1 class="hero-name">Sanjeevan V</h1>
+            <div class="hero-roles">
+                <span id="typewriter"></span><span class="cursor">|</span>
+            </div>
+            <p class="hero-tagline">"Securing today's technology while building tomorrow's safer digital world."</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-solid"><i class="fas fa-download"></i> Resume</a>
+                <a href="#contact" class="btn"><i class="fas fa-paper-plane"></i> Contact Me</a>
+            </div>
+        </div>
+        <div class="hero-image gsap-fade-left">
+            <div class="img-placeholder" data-tilt data-tilt-glare data-tilt-max-glare="0.2">
+                <img src="profile-photo.png" alt="Portrait of Sanjeevan V">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <h2 class="section-title">About <span>Me</span></h2>
+        <div class="glass-card gsap-fade-up" data-tilt data-tilt-max="2">
+            <p style="font-size: 1.2rem; line-height: 1.8; text-align: justify;">
+                I am a passionate <strong>Cyber Security student</strong> dedicated to the art of safeguarding digital landscapes. My core interests lie in <strong>ethical hacking, penetration testing, Linux administration, networking, Python programming, and web security</strong>. I thrive on solving complex technical problems, continuously expanding my skill set, and building practical, real-world cybersecurity projects. My goal is to bridge the gap between theoretical knowledge and offensive/defensive security execution.
+            </p>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section" id="skills">
+        <h2 class="section-title">Technical <span>Arsenal</span></h2>
+        <div class="skills-grid">
+            <div class="glass-card skill-category gsap-fade-up" data-tilt>
+                <h3><i class="fas fa-code"></i> Programming</h3>
+                <ul class="skill-list">
+                    <li><i class="fab fa-python"></i> Python</li>
+                </ul>
+            </div>
+            <div class="glass-card skill-category gsap-fade-up" data-tilt data-tilt-max="5">
+                <h3><i class="fas fa-shield-alt"></i> Cyber Security</h3>
+                <ul class="skill-list">
+                    <li><i class="fas fa-user-ninja"></i> Ethical Hacking</li>
+                    <li><i class="fas fa-skull-crossbones"></i> Penetration Testing</li>
+                    <li><i class="fab fa-linux"></i> Kali Linux</li>
+                    <li><i class="fas fa-network-wired"></i> Networking</li>
+                </ul>
+            </div>
+            <div class="glass-card skill-category gsap-fade-up" data-tilt>
+                <h3><i class="fas fa-tools"></i> Tools</h3>
+                <ul class="skill-list">
+                    <li><i class="fas fa-code-branch"></i> VS Code & Git/GitHub</li>
+                    <li><i class="fas fa-server"></i> VMware</li>
+                    <li><i class="fas fa-wifi"></i> Wireshark & Nmap</li>
+                    <li><i class="fas fa-spider"></i> Burp Suite & Metasploit</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience / Current Status Section -->
+    <section class="section" id="experience">
+        <div class="glass-card gsap-fade-up" style="text-align: center; border-color: var(--gold);" data-tilt>
+            <h3 style="margin-bottom: 10px; font-size: 1.8rem;">Currently Learning</h3>
+            <p class="text-gold" style="font-family: var(--font-head); margin-bottom: 15px;">Cyber Security Student</p>
+            <p>Building practical projects and continuously improving my cybersecurity knowledge through rigorous hands-on learning and research.</p>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section" id="projects">
+        <h2 class="section-title">Featured <span>Projects</span></h2>
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="glass-card project-card gsap-fade-up" data-tilt>
+                <h3>Password Strength Checker</h3>
+                <p class="project-tech">Python | Cryptography</p>
+                <p style="margin-bottom: 20px; font-size: 0.95rem;">An advanced script evaluating password entropy, checking against known breaches, and enforcing security policies.</p>
+                <div class="project-links">
+                    <a href="#" class="btn"><i class="fas fa-play"></i> Demo</a>
+                    <a href="#" class="btn"><i class="fab fa-github"></i> Code</a>
+                </div>
+            </div>
+            <!-- Project 2 -->
+            <div class="glass-card project-card gsap-fade-up" data-tilt>
+                <h3>Network & Port Scanner</h3>
+                <p class="project-tech">Python | Socket | Nmap API</p>
+                <p style="margin-bottom: 20px; font-size: 0.95rem;">A custom multithreaded scanning tool for rapid host discovery and vulnerability enumeration across subnets.</p>
+                <div class="project-links">
+                    <a href="#" class="btn"><i class="fas fa-play"></i> Demo</a>
+                    <a href="#" class="btn"><i class="fab fa-github"></i> Code</a>
+                </div>
+            </div>
+            <!-- Project 3 -->
+            <div class="glass-card project-card gsap-fade-up" data-tilt>
+                <h3>Linux Automation Scripts</h3>
+                <p class="project-tech">Bash | Linux Admin</p>
+                <p style="margin-bottom: 20px; font-size: 0.95rem;">A suite of shell scripts automating system hardening, log parsing, and routine administrative tasks.</p>
+                <div class="project-links">
+                    <a href="#" class="btn"><i class="fas fa-play"></i> Demo</a>
+                    <a href="#" class="btn"><i class="fab fa-github"></i> Code</a>
+                </div>
+            </div>
+            <!-- Project 4 -->
+            <div class="glass-card project-card gsap-fade-up" data-tilt>
+                <h3>Future Security Dashboard</h3>
+                <p class="project-tech">Web Security | UI/UX</p>
+                <p style="margin-bottom: 20px; font-size: 0.95rem;">A conceptual luxury dashboard mapping real-time threat intelligence and vulnerability metrics.</p>
+                <div class="project-links">
+                    <a href="#" class="btn"><i class="fas fa-play"></i> Demo</a>
+                    <a href="#" class="btn"><i class="fab fa-github"></i> Code</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline / Roadmap Section -->
+    <section class="section" id="roadmap">
+        <h2 class="section-title">My <span>Roadmap</span></h2>
+        <div class="timeline">
+            <div class="timeline-item gsap-timeline">
+                <div class="timeline-dot"></div>
+                <div class="glass-card timeline-content" data-tilt>
+                    <h3>Learning Programming</h3>
+                    <p class="text-gold">Foundation</p>
+                </div>
+            </div>
+            <div class="timeline-item gsap-timeline">
+                <div class="timeline-dot"></div>
+                <div class="glass-card timeline-content" data-tilt>
+                    <h3>Learning Linux</h3>
+                    <p class="text-gold">OS Mastery</p>
+                </div>
+            </div>
+            <div class="timeline-item gsap-timeline">
+                <div class="timeline-dot"></div>
+                <div class="glass-card timeline-content" data-tilt>
+                    <h3>Networking</h3>
+                    <p class="text-gold">Protocols & Architecture</p>
+                </div>
+            </div>
+            <div class="timeline-item gsap-timeline">
+                <div class="timeline-dot"></div>
+                <div class="glass-card timeline-content" data-tilt>
+                    <h3>Cyber Security</h3>
+                    <p class="text-gold">Core Concepts</p>
+                </div>
+            </div>
+            <div class="timeline-item gsap-timeline">
+                <div class="timeline-dot"></div>
+                <div class="glass-card timeline-content" data-tilt>
+                    <h3>Ethical Hacking</h3>
+                    <p class="text-gold">Offensive Fundamentals</p>
+                </div>
+            </div>
+            <div class="timeline-item gsap-timeline">
+                <div class="timeline-dot"></div>
+                <div class="glass-card timeline-content" data-tilt>
+                    <h3>Penetration Testing</h3>
+                    <p class="text-gold">Advanced Exploitation</p>
+                </div>
+            </div>
+            <div class="timeline-item gsap-timeline">
+                <div class="timeline-dot"></div>
+                <div class="glass-card timeline-content" data-tilt>
+                    <h3>Security Research</h3>
+                    <p class="text-gold">Vulnerability Discovery</p>
+                </div>
+            </div>
+            <div class="timeline-item gsap-timeline">
+                <div class="timeline-dot" style="box-shadow: 0 0 20px #FFF8DC; border-color: #FFF8DC;"></div>
+                <div class="glass-card timeline-content" data-tilt style="border-color: var(--gold);">
+                    <h3>Pro Cyber Sec Engineer</h3>
+                    <p class="text-gold">Future Goal</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section class="section" id="certificates">
+        <h2 class="section-title">Certifications & <span>Goals</span></h2>
+        <div class="projects-grid">
+            <div class="glass-card certificate-card gsap-fade-up" data-tilt>
+                <a class="certificate-preview" href="python-certificate.png" target="_blank" rel="noopener" aria-label="View Python certificate">
+                    <img src="python-certificate.png" alt="Kaggle Python certificate awarded to Sanjeevan V">
+                </a>
+                <h3>Python Certification</h3>
+                <p class="text-muted">Kaggle · Completed August 1, 2026</p>
+            </div>
+            <div class="glass-card certificate-card gsap-fade-up" data-tilt>
+                <a class="certificate-preview" href="python-coder-certificate.png" target="_blank" rel="noopener" aria-label="View Python Coder certificate">
+                    <img src="python-coder-certificate.png" alt="Kaggle Python Coder certificate awarded to Sanjeevan V">
+                </a>
+                <h3>Python Coder</h3>
+                <p class="text-muted">Kaggle · Earned August 1, 2026</p>
+            </div>
+            <div class="glass-card certificate-card gsap-fade-up" data-tilt>
+                <a class="certificate-preview" href="kaggle-community-member.png" target="_blank" rel="noopener" aria-label="View Kaggle Community Member certificate">
+                    <img src="kaggle-community-member.png" alt="Kaggle Community Member certificate awarded to Sanjeevan V">
+                </a>
+                <h3>Kaggle Community Member</h3>
+                <p class="text-muted">Kaggle · Earned August 1, 2026</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements / Counters -->
+    <section class="section" id="achievements">
+        <div class="achievements-grid">
+            <div class="glass-card gsap-fade-up" data-tilt>
+                <div class="achievement-number counter" data-target="3">0</div>
+                <p>Projects Completed</p>
+            </div>
+            <div class="glass-card gsap-fade-up" data-tilt>
+                <div class="achievement-number counter" data-target="3">0</div>
+                <p>Certificates Earned</p>
+            </div>
+            <div class="glass-card gsap-fade-up" data-tilt>
+                <div class="achievement-number counter" data-target="12">0</div>
+                <p>Technologies Learned</p>
+            </div>
+            <div class="glass-card gsap-fade-up" data-tilt>
+                <div class="achievement-number counter" data-target="1200">0</div>
+                <p>Learning Hours</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <h2 class="section-title">Establish <span>Connection</span></h2>
+        <div class="glass-card contact-container gsap-fade-up" data-tilt data-tilt-max="1">
+            <form onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Identify Yourself (Name)" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="Encrypted Channel (Email)" required>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" rows="5" placeholder="Transmit Message..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-solid" style="width: 100%;">Execute <i class="fas fa-terminal"></i></button>
+            </form>
+            <p class="contact-email"><i class="fas fa-envelope text-gold"></i> <a href="mailto:sanjeevav490@gmail.com">sanjeevav490@gmail.com</a></p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/sanjeeva-v-b47684380" target="_blank" rel="noopener" aria-label="View Sanjeevan V's LinkedIn profile"><i class="fab fa-linkedin"></i></a>
+                <a href="mailto:sanjeevav490@gmail.com" aria-label="Email Sanjeevan V"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Designed & Developed by <span class="text-gold">SANJEEVAN V</span></p>
+        <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.5;">© 2026 Future Cyber Security Dashboard</p>
+    </footer>
+
+    <!-- Scripts: GSAP, ScrollTrigger, VanillaTilt -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        /* 1. Typewriter Effect */
+        const roles = ["Cyber Security Student", "Future Ethical Hacker", "Penetration Tester", "Security Researcher"];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typeTarget = document.getElementById("typewriter");
+
+        function type() {
+            const currentRole = roles[roleIndex];
+            if(isDeleting) {
+                typeTarget.innerText = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typeTarget.innerText = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if(!isDeleting && charIndex === currentRole.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if(isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                typeSpeed = 500;
+            }
+            setTimeout(type, typeSpeed);
+        }
+        document.addEventListener("DOMContentLoaded", () => { setTimeout(type, 1000); });
+
+        /* 2. GSAP Animations */
+        gsap.utils.toArray('.gsap-fade-up').forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: { trigger: element, start: "top 85%" },
+                y: 50, opacity: 0, duration: 1, ease: "power3.out"
+            });
+        });
+        gsap.utils.toArray('.gsap-fade-left').forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: { trigger: element, start: "top 85%" },
+                x: 50, opacity: 0, duration: 1, ease: "power3.out"
+            });
+        });
+        gsap.utils.toArray('.gsap-timeline').forEach((element, i) => {
+            gsap.from(element, {
+                scrollTrigger: { trigger: element, start: "top 85%" },
+                x: i % 2 === 0 ? -50 : 50, opacity: 0, duration: 1, ease: "power3.out"
+            });
+        });
+
+        /* 3. Counter Animation */
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            ScrollTrigger.create({
+                trigger: counter,
+                start: "top 90%",
+                onEnter: () => {
+                    const target = +counter.getAttribute('data-target');
+                    const duration = 2000; // 2 seconds
+                    const increment = target / (duration / 16);
+                    let current = 0;
+                    const updateCounter = () => {
+                        current += increment;
+                        if(current < target) {
+                            counter.innerText = Math.ceil(current) + (target > 1000 ? "+" : "");
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            counter.innerText = target + (target > 1000 ? "+" : "");
+                        }
+                    };
+                    updateCounter();
+                },
+                once: true
+            });
+        });
+
+        /* 4. Canvas Luxury Hacker Background & Cursor Effects */
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        
+        let mouse = { x: -1000, y: -1000 };
+        const particles = [];
+        const binaryStream = [];
+        const trails = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Binary Rain Init
+        const binaryChars = "01".split("");
+        for(let i=0; i<50; i++){
+            binaryStream.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                speed: 1 + Math.random() * 2,
+                fontSize: 10 + Math.random() * 10
+            });
+        }
+
+        // Particle Init (Grid nodes)
+        for(let i=0; i<100; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5
+            });
+        }
+
+        // Mouse Events
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            // Add to trail
+            trails.push({ x: mouse.x, y: mouse.y, alpha: 1, size: Math.random() * 3 + 2 });
+        });
+
+        window.addEventListener('click', (e) => {
+            // Click pulse effect
+            const pulse = document.createElement('div');
+            pulse.classList.add('cursor-pulse');
+            pulse.style.left = e.clientX + 'px';
+            pulse.style.top = e.clientY + 'px';
+            document.body.appendChild(pulse);
+            
+            // Generate sparks
+            for(let i=0; i<15; i++) {
+                trails.push({
+                    x: e.clientX, y: e.clientY,
+                    vx: (Math.random() - 0.5) * 10,
+                    vy: (Math.random() - 0.5) * 10,
+                    alpha: 1, size: Math.random() * 4 + 2, isSpark: true
+                });
+            }
+            setTimeout(() => { pulse.remove(); }, 600);
+        });
+
+        function draw() {
+            // Dark elegant clearing
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw Binary Rain
+            ctx.fillStyle = 'rgba(255, 215, 0, 0.15)'; // faint gold
+            binaryStream.forEach(drop => {
+                ctx.font = `${drop.fontSize}px 'Orbitron'`;
+                const char = binaryChars[Math.floor(Math.random() * binaryChars.length)];
+                ctx.fillText(char, drop.x, drop.y);
+                drop.y += drop.speed;
+                if(drop.y > height) { drop.y = 0; drop.x = Math.random() * width; }
+            });
+
+            // Draw Cyber Grid / Particles
+            ctx.fillStyle = '#FFD700';
+            particles.forEach((p, index) => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > width) p.vx *= -1;
+                if(p.y < 0 || p.y > height) p.vy *= -1;
+
+                // Connect to mouse (Golden network lines)
+                const dx = p.x - mouse.x;
+                const dy = p.y - mouse.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if(dist < 150) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = `rgba(255, 215, 0, ${1 - dist/150})`;
+                    ctx.lineWidth = 1;
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                }
+
+                // Connect to other particles
+                for(let j=index+1; j<particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx2 = p.x - p2.x;
+                    const dy2 = p.y - p2.y;
+                    const dist2 = Math.sqrt(dx2*dx2 + dy2*dy2);
+                    if(dist2 < 80) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(255, 248, 220, ${0.2 - dist2/400})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 1, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Draw Cursor Trail / Sparks
+            for(let i = trails.length - 1; i >= 0; i--) {
+                const t = trails[i];
+                ctx.beginPath();
+                ctx.fillStyle = `rgba(255, 255, 255, ${t.alpha})`;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = "#FFD700";
+                ctx.arc(t.x, t.y, t.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0; // reset
+
+                if(t.isSpark) {
+                    t.x += t.vx; t.y += t.vy;
+                    t.alpha -= 0.03;
+                } else {
+                    t.alpha -= 0.02; // Trial disappears approx in 1-2 sec depending on frame rate
+                }
+                
+                if(t.alpha <= 0) trails.splice(i, 1);
+            }
+
+            // Draw Core Custom Cursor Point
+            ctx.beginPath();
+            ctx.fillStyle = '#FFD700';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = "#FFF8DC";
+            ctx.arc(mouse.x, mouse.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>
