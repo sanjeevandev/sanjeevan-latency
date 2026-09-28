@@ -261,6 +261,48 @@
             .timeline-item { width: 100%; padding-left: 50px !important; padding-right: 0 !important; text-align: left !important; margin-left: 0 !important; }
             .timeline-dot { left: 12px !important; right: auto !important; }
         }
+
+        /* Premium 3D scroll layer — keeps the original black/gold visual identity */
+        html { scroll-behavior: smooth; }
+        .section { perspective: 1200px; }
+        .project-showcase { perspective: 1400px; }
+        .project-card, .skill-category, .certificate-card, .timeline-content {
+            transform-style: preserve-3d;
+            will-change: transform, opacity;
+        }
+        .project-card { position: relative; overflow: hidden; }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(255,215,0,.14), transparent 34%);
+            opacity: 0;
+            transition: opacity .35s ease;
+            pointer-events: none;
+        }
+        .project-card:hover::before { opacity: 1; }
+        .project-index {
+            color: var(--gold);
+            font-family: var(--font-head);
+            font-size: .72rem;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            opacity: .75;
+        }
+        .scroll-reveal {
+            opacity: 0;
+            transform: translate3d(0, 70px, -40px) rotateX(7deg);
+            transition: opacity .85s ease, transform .95s cubic-bezier(.16,1,.3,1);
+        }
+        .scroll-reveal.is-visible {
+            opacity: 1;
+            transform: translate3d(0,0,0) rotateX(0);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+            .scroll-reveal { opacity: 1; transform: none; }
+        }
     </style>
 </head>
 <body>
@@ -284,7 +326,7 @@
         </div>
         <div class="hero-image gsap-fade-left">
             <div class="img-placeholder" data-tilt data-tilt-glare data-tilt-max-glare="0.2">
-                <img src="profile-photo.png" alt="Portrait of Sanjeevan V">
+                <img src="./profile-photo.jpeg" alt="Portrait of Sanjeevan V">
             </div>
         </div>
     </section>
@@ -342,47 +384,46 @@
     <!-- Projects Section -->
     <section class="section" id="projects">
         <h2 class="section-title">Featured <span>Projects</span></h2>
-        <div class="projects-grid">
-            <!-- Project 1 -->
-            <div class="glass-card project-card gsap-fade-up" data-tilt>
-                <h3>Password Strength Checker</h3>
-                <p class="project-tech">Python | Cryptography</p>
-                <p style="margin-bottom: 20px; font-size: 0.95rem;">An advanced script evaluating password entropy, checking against known breaches, and enforcing security policies.</p>
+        <div class="projects-grid project-showcase">
+            <article class="glass-card project-card gsap-fade-up" data-tilt>
+                <div class="project-index">01</div>
+                <h3>HEPNA MART</h3>
+                <p class="project-tech">React | Vite | E-commerce | BOQ</p>
+                <p style="margin-bottom:20px;font-size:.95rem;">A construction-material marketplace designed for retail buyers and small construction businesses, with product discovery, cart, wishlist, project planning and BOQ workflows.</p>
                 <div class="project-links">
-                    <a href="#" class="btn"><i class="fas fa-play"></i> Demo</a>
-                    <a href="#" class="btn"><i class="fab fa-github"></i> Code</a>
+                    <a href="https://github.com/sanjeevandev/hepna_mart" class="btn" target="_blank" rel="noopener"><i class="fab fa-github"></i> Code</a>
                 </div>
-            </div>
-            <!-- Project 2 -->
-            <div class="glass-card project-card gsap-fade-up" data-tilt>
-                <h3>Network & Port Scanner</h3>
-                <p class="project-tech">Python | Socket | Nmap API</p>
-                <p style="margin-bottom: 20px; font-size: 0.95rem;">A custom multithreaded scanning tool for rapid host discovery and vulnerability enumeration across subnets.</p>
+            </article>
+
+            <article class="glass-card project-card gsap-fade-up" data-tilt>
+                <div class="project-index">02</div>
+                <h3>S.P.O.T.</h3>
+                <p class="project-tech">AI | Computer Vision | React | Python</p>
+                <p style="margin-bottom:20px;font-size:.95rem;">Smart Produce Observation & Tracking — an AI-assisted onion quality workflow for identifying produce conditions and generating a simple quality report.</p>
                 <div class="project-links">
-                    <a href="#" class="btn"><i class="fas fa-play"></i> Demo</a>
-                    <a href="#" class="btn"><i class="fab fa-github"></i> Code</a>
+                    <a href="https://github.com/sanjeevandev/hackathon-S.P.O.T." class="btn" target="_blank" rel="noopener"><i class="fab fa-github"></i> Code</a>
                 </div>
-            </div>
-            <!-- Project 3 -->
-            <div class="glass-card project-card gsap-fade-up" data-tilt>
-                <h3>Linux Automation Scripts</h3>
-                <p class="project-tech">Bash | Linux Admin</p>
-                <p style="margin-bottom: 20px; font-size: 0.95rem;">A suite of shell scripts automating system hardening, log parsing, and routine administrative tasks.</p>
+            </article>
+
+            <article class="glass-card project-card gsap-fade-up" data-tilt>
+                <div class="project-index">03</div>
+                <h3>Trace-X</h3>
+                <p class="project-tech">Cyber Security | Threat Investigation | Python</p>
+                <p style="margin-bottom:20px;font-size:.95rem;">A practical security investigation platform for correlating logs, enriching suspicious activity and organizing incidents into an investigation workflow.</p>
                 <div class="project-links">
-                    <a href="#" class="btn"><i class="fas fa-play"></i> Demo</a>
-                    <a href="#" class="btn"><i class="fab fa-github"></i> Code</a>
+                    <a href="https://github.com/sanjeevandev/attacktrace" class="btn" target="_blank" rel="noopener"><i class="fab fa-github"></i> Code</a>
                 </div>
-            </div>
-            <!-- Project 4 -->
-            <div class="glass-card project-card gsap-fade-up" data-tilt>
-                <h3>Future Security Dashboard</h3>
-                <p class="project-tech">Web Security | UI/UX</p>
-                <p style="margin-bottom: 20px; font-size: 0.95rem;">A conceptual luxury dashboard mapping real-time threat intelligence and vulnerability metrics.</p>
+            </article>
+
+            <article class="glass-card project-card gsap-fade-up" data-tilt>
+                <div class="project-index">04</div>
+                <h3>Team Chat App</h3>
+                <p class="project-tech">Web App | Real-time Communication</p>
+                <p style="margin-bottom:20px;font-size:.95rem;">A privacy-focused team communication project built around a simple collaborative chat experience.</p>
                 <div class="project-links">
-                    <a href="#" class="btn"><i class="fas fa-play"></i> Demo</a>
-                    <a href="#" class="btn"><i class="fab fa-github"></i> Code</a>
+                    <a href="https://github.com/sanjeevandev/team-chat-app" class="btn" target="_blank" rel="noopener"><i class="fab fa-github"></i> Code</a>
                 </div>
-            </div>
+            </article>
         </div>
     </section>
 
@@ -451,7 +492,7 @@
 
     <!-- Certifications Section -->
     <section class="section" id="certificates">
-        <h2 class="section-title">Certifications & <span>Goals</span></h2>
+        <h2 class="section-title">Certifications & <span>Credentials</span></h2>
         <div class="projects-grid">
             <div class="glass-card certificate-card gsap-fade-up" data-tilt>
                 <a class="certificate-preview" href="python-certificate.png" target="_blank" rel="noopener" aria-label="View Python certificate">
@@ -474,6 +515,14 @@
                 <h3>Kaggle Community Member</h3>
                 <p class="text-muted">Kaggle · Earned August 1, 2026</p>
             </div>
+            <div class="glass-card certificate-card gsap-fade-up" data-tilt>
+                <a class="certificate-preview" href="cappriciosec-certificate.svg" target="_blank" rel="noopener" aria-label="View CappricioSec certificate record">
+                    <img src="cappriciosec-certificate.svg" alt="CappricioSec University Certificate of Completion record for Sanjeevan V">
+                </a>
+                <h3>Advanced Cybersecurity Training</h3>
+                <p class="text-muted">CappricioSec University · 42 hours · Issued 16 Sep 2026</p>
+                <p style="margin-top:10px;font-size:.85rem;color:var(--text-muted);">Credential ID: aaa46e7f0f4f46fdec6f</p>
+            </div>
         </div>
     </section>
 
@@ -481,7 +530,7 @@
     <section class="section" id="achievements">
         <div class="achievements-grid">
             <div class="glass-card gsap-fade-up" data-tilt>
-                <div class="achievement-number counter" data-target="3">0</div>
+                <div class="achievement-number counter" data-target="4">0</div>
                 <p>Projects Completed</p>
             </div>
             <div class="glass-card gsap-fade-up" data-tilt>
@@ -769,5 +818,51 @@
         }
         draw();
     </script>
+
+    <script>
+    (() => {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Native scroll reveal: no loader, no dependency, never blocks page rendering.
+        const revealTargets = document.querySelectorAll('.project-card, .skill-category, .certificate-card, .timeline-item, #about .glass-card, #experience .glass-card');
+        revealTargets.forEach((el, i) => {
+            el.classList.add('scroll-reveal');
+            el.style.transitionDelay = Math.min(i * 35, 220) + 'ms';
+        });
+
+        if (!reduceMotion && 'IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+            revealTargets.forEach(el => observer.observe(el));
+        } else {
+            revealTargets.forEach(el => el.classList.add('is-visible'));
+        }
+
+        // Small pointer-driven depth on cards.
+        if (!reduceMotion && window.matchMedia('(pointer:fine)').matches) {
+            document.querySelectorAll('[data-tilt]').forEach(card => {
+                card.addEventListener('pointermove', (e) => {
+                    const r = card.getBoundingClientRect();
+                    const x = (e.clientX - r.left) / r.width - .5;
+                    const y = (e.clientY - r.top) / r.height - .5;
+                    const max = card.classList.contains('project-card') ? 5 : 3;
+                    card.style.setProperty('--mx', ((x + .5) * 100) + '%');
+                    card.style.setProperty('--my', ((y + .5) * 100) + '%');
+                    card.style.transform = 'perspective(900px) rotateX(' + (-y * max) + 'deg) rotateY(' + (x * max) + 'deg) translateY(-4px)';
+                });
+                card.addEventListener('pointerleave', () => {
+                    card.style.transform = '';
+                });
+            });
+        }
+    })();
+    </script>
+
 </body>
 </html>
